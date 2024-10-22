@@ -85,7 +85,7 @@ function RegisterMembers() {
     return (
         <div style={{ backgroundImage: 'url(/images/bg-image.jpg)', backgroundSize: 'cover', minHeight: '100vh', padding: '1rem' }}>
             <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                <img src='/images/home.jpg' alt="arrow" style={{ width: '16px', height: '16px', marginRight: '8px' }} />Back
+                Back
             </button>
 
             <div style={{

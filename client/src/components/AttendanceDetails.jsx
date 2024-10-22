@@ -81,8 +81,15 @@ function AttendanceDetails() {
     window.print();
   };
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
     <div>
+          <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                Back
+            </button>
       <div style={styles.container}>
         <button onClick={exportToCSV} style={{ ...styles.button, ...styles.exportButton }}>
           Export to CSV

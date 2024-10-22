@@ -114,9 +114,16 @@ function ViewMembers() {
     }
 };
 
+    const handleGoBack = () => {
+      window.history.back();
+    };
+
 
   return (
     <div style={{ minHeight: "100vh", padding: "20px", textAlign: "center", backgroundImage: "url('/image/viewbg.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+          <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                Back
+            </button>
       <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#ff7f00", marginBottom: "24px" }}>View Members</h1>
 
       <div style={{ marginBottom: "16px" }}>
@@ -185,21 +192,6 @@ function ViewMembers() {
                   padding: "20px",
                 }}
               >
-                <img
-                  src="https://via.placeholder.com/100"
-                  alt="Placeholder"
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    border: "2px solid #000",
-                    marginBottom: "16px",
-                    objectFit: "cover",
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }}
-                />
                 <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>{memberName}</h3>
                 <p>Firstname: {member.first_name}</p>
                 <p>Lastname: {member.last_name}</p>

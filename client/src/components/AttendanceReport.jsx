@@ -127,8 +127,15 @@ function AttendanceReport() {
     ],
   };
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
     <div style={styles.container}>
+          <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                Back
+            </button>
       {loading ? (
         <p style={styles.loadingText}>Loading...</p>
       ) : error ? (
