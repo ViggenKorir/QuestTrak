@@ -88,7 +88,7 @@ function ViewMembers() {
   };
 
   const deleteMember = async (memberId) => {
-    console.log(`Attempting to delete member with ID: ${memberId}`); // Debugging log
+    console.log(`Attempting to delete member with ID: ${memberId}`);
 
     const confirmDelete = window.confirm("Are you sure you want to delete this member?");
     if (!confirmDelete) return;

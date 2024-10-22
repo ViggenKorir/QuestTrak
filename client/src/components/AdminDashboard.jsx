@@ -26,11 +26,11 @@ function AdminDashboard() {
   }, []);
 
   const handleLogout = () => {
-    // Clear tokens or any user session data
-    localStorage.removeItem('userToken'); // Adjust this based on how you store your user session
-    // Redirect to login page or any other route
-    navigate('/'); // Ensure you have a login route
-    console.log("User logged out"); // Optional logging
+    
+    localStorage.removeItem('userToken'); 
+    
+    navigate('/'); 
+    console.log("User logged out"); 
   };
 
   return (
@@ -79,7 +79,7 @@ function AdminDashboard() {
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)', // Adjusted to 2 columns
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '2rem',
             marginBottom: '2.5rem',
           }}>

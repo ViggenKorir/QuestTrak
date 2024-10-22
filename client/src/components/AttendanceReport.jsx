@@ -33,7 +33,7 @@ const styles = {
     top: '1rem',
     left: '1rem',
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#1e3a8a',  // Professional dark blue
+    backgroundColor: '#1e3a8a', 
     color: 'white',
     border: 'none',
     borderRadius: '0.375rem',
@@ -43,7 +43,7 @@ const styles = {
     transition: 'background-color 0.3s ease',
   },
   backButtonHover: {
-    backgroundColor: '#4f46e5',  // Lighter blue on hover
+    backgroundColor: '#4f46e5', 
   },
   header: {
     fontSize: '2rem',
@@ -57,7 +57,7 @@ const styles = {
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: '1.5rem',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',  // Adding a transparent background to make text clearer
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     padding: '1rem',
     borderRadius: '0.5rem',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',

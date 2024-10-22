@@ -163,7 +163,7 @@ function Home() {
                                 e.target.style.boxShadow = '0px 6px 14px rgba(0, 0, 0, 0.3)';
                             }}
                         >
-                            {/* Overlay */}
+                            
                             <div style={{
                                 position: 'absolute',
                                 inset: '0',
@@ -171,7 +171,7 @@ function Home() {
                                 borderRadius: '1rem',
                             }}></div>
 
-                            {/* Text */}
+                            
                             <div style={{
                                 position: 'relative',
                                 zIndex: '10',

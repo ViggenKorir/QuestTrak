@@ -1,86 +1,76 @@
-import { useState } from 'react';
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function RegisterMembers() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [DOB, setDOB] = useState('');
-    const [location, setLocation] = useState('');
-    const [phone, setPhone] = useState('');
-    const [isStudent, setIsStudent] = useState(false); 
-    const [school, setSchool] = useState('');
-    const [isVisitor, setIsVisitor] = useState(false); 
-    const [willBeComing, setWillBeComing] = useState(false); 
-    const [occupation, setOccupation] = useState('');
-    const [group, setGroup] = useState('');
-    const [leader, setLeader] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            lastName: '',
+            DOB: '',
+            location: '',
+            phone: '',
+            isStudent: false,
+            school: '',
+            isVisitor: false,
+            willBeComing: false,
+            occupation: '',
+            group: '',
+            leader: false,
+        },
+        validationSchema: Yup.object({
+            firstName: Yup.string().required('Required'),
+            lastName: Yup.string().required('Required'),
+            DOB: Yup.date().required('Required'),
+            location: Yup.string().required('Required'),
+            phone: Yup.string().required('Required'),
+            occupation: Yup.string().required('Required'),
+            group: Yup.string().required('Required'),
+        }),
+        onSubmit: async (values, { setSubmitting, setSuccess, setError, resetForm }) => {
+            try {
+                const newMember = {
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    dob: values.DOB,
+                    location: values.location,
+                    phone: values.phone,
+                    leader: values.leader,
+                    is_student: values.isStudent,
+                    school: values.isStudent ? values.school : '',
+                    is_visitor: values.isVisitor,
+                    will_be_coming: values.isVisitor ? values.willBeComing : false,
+                    occupation: values.occupation,
+                    group: values.group,
+                    group_id: values.group,
+                };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+                const response = await fetch('https://vault-reg.onrender.com/adminregistry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newMember),
+                });
 
-        if (!firstName || !lastName || !DOB || !location || !phone || !occupation || !group) {
-            setError('Please fill in all fields.');
-            setIsSubmitting(false);
-            return;
-        }
-
-        const newMember = {
-            first_name: firstName,
-            last_name: lastName,
-            dob: DOB,
-            location,
-            phone,
-            leader,
-            is_student: isStudent,
-            school: isStudent ? school : '',
-            is_visitor: isVisitor,
-            will_be_coming: isVisitor ? willBeComing : false,
-            occupation,
-            group,
-            group_id: group
-        };
-        console.log(newMember)
-        try {
-            const response = await fetch('https://vault-reg.onrender.com/adminregistry', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newMember),
-            });
-
-            if (response.ok) {
-                setSuccess('Member registered successfully!');
-                setFirstName('');
-                setLastName('');
-                setDOB('');
-                setLocation('');
-                setPhone('');
-                setIsStudent(false); 
-                setSchool('');
-                setIsVisitor(false); 
-                setWillBeComing(false); 
-                setOccupation('');
-                setLeader(false);
-                setGroup('');
-                setError(null);
-            } else {
-                setError('Failed to register member. Please try again.');
+                if (response.ok) {
+                    setSuccess('Member registered successfully!');
+                    resetForm();
+                } else {
+                    setError('Failed to register member. Please try again.');
+                }
+            } catch (err) {
+                console.error(err);
+                setError('An error occurred. Please try again later.');
+            } finally {
+                setSubmitting(false);
             }
-        } catch (err) {
-            console.error(err);
-            setError('An error occurred. Please try again later.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+        },
+    });
 
     const handleGoBack = () => {
         window.history.back();
-      };
+    };
 
     return (
         <div style={{ backgroundImage: 'url(/images/bg-image.jpg)', backgroundSize: 'cover', minHeight: '100vh', padding: '1rem' }}>
@@ -97,86 +87,80 @@ function RegisterMembers() {
                 backgroundColor: 'rgba(255, 255, 255, 0.9)'
             }}>
                 <h1 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '24px', color: '#333' }}>Register a New Member</h1>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div>
                         <label htmlFor="firstName" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>First Name</label>
                         <input 
                             id="firstName"
-                            type="text" 
-                            value={firstName} 
-                            onChange={(e) => setFirstName(e.target.value)} 
+                            type="text"
+                            {...formik.getFieldProps('firstName')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                            required 
                         />
+                        {formik.touched.firstName && formik.errors.firstName && <p style={{ color: 'red' }}>{formik.errors.firstName}</p>}
                     </div>
 
                     <div>
                         <label htmlFor="lastName" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Last Name</label>
                         <input 
                             id="lastName"
-                            type="text" 
-                            value={lastName} 
-                            onChange={(e) => setLastName(e.target.value)} 
+                            type="text"
+                            {...formik.getFieldProps('lastName')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                            required 
                         />
+                        {formik.touched.lastName && formik.errors.lastName && <p style={{ color: 'red' }}>{formik.errors.lastName}</p>}
                     </div>
 
                     <div>
                         <label htmlFor="DOB" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Date of Birth</label>
                         <input 
                             id="DOB"
-                            type="date" 
-                            value={DOB} 
-                            onChange={(e) => setDOB(e.target.value)} 
+                            type="date"
+                            {...formik.getFieldProps('DOB')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                            required 
                         />
+                        {formik.touched.DOB && formik.errors.DOB && <p style={{ color: 'red' }}>{formik.errors.DOB}</p>}
                     </div>
 
                     <div>
                         <label htmlFor="location" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Location</label>
                         <input 
                             id="location"
-                            type="text" 
-                            value={location} 
-                            onChange={(e) => setLocation(e.target.value)} 
+                            type="text"
+                            {...formik.getFieldProps('location')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                            required 
                         />
+                        {formik.touched.location && formik.errors.location && <p style={{ color: 'red' }}>{formik.errors.location}</p>}
                     </div>
 
                     <div>
                         <label htmlFor="phone" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Phone</label>
                         <input 
                             id="phone"
-                            type="tel" 
-                            value={phone} 
-                            onChange={(e) => setPhone(e.target.value)} 
+                            type="tel"
+                            {...formik.getFieldProps('phone')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                            required 
                         />
+                        {formik.touched.phone && formik.errors.phone && <p style={{ color: 'red' }}>{formik.errors.phone}</p>}
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <input 
-                            id="isStudent" 
-                            type="checkbox" 
-                            checked={isStudent} 
-                            onChange={(e) => setIsStudent(e.target.checked)} 
+                            id="isStudent"
+                            type="checkbox"
+                            checked={formik.values.isStudent}
+                            onChange={formik.handleChange}
                             style={{ marginRight: '8px' }}
                         />
                         <label htmlFor="isStudent" style={{ color: '#333' }}>Is Student?</label>
                     </div>
 
-                    {isStudent && (
+                    {formik.values.isStudent && (
                         <div>
                             <label htmlFor="school" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>School Name</label>
                             <input 
                                 id="school"
-                                type="text" 
-                                value={school} 
-                                onChange={(e) => setSchool(e.target.value)} 
+                                type="text"
+                                {...formik.getFieldProps('school')}
                                 style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
                             />
                         </div>
@@ -184,22 +168,22 @@ function RegisterMembers() {
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <input 
-                            id="isVisitor" 
-                            type="checkbox" 
-                            checked={isVisitor} 
-                            onChange={(e) => setIsVisitor(e.target.checked)} 
+                            id="isVisitor"
+                            type="checkbox"
+                            checked={formik.values.isVisitor}
+                            onChange={formik.handleChange}
                             style={{ marginRight: '8px' }}
                         />
                         <label htmlFor="isVisitor" style={{ color: '#333' }}>Is Visitor?</label>
                     </div>
 
-                    {isVisitor && (
+                    {formik.values.isVisitor && (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <input 
-                                id="willBeComing" 
-                                type="checkbox" 
-                                checked={willBeComing} 
-                                onChange={(e) => setWillBeComing(e.target.checked)} 
+                                id="willBeComing"
+                                type="checkbox"
+                                checked={formik.values.willBeComing}
+                                onChange={formik.handleChange}
                                 style={{ marginRight: '8px' }}
                             />
                             <label htmlFor="willBeComing" style={{ color: '#333' }}>Will be coming again?</label>
@@ -210,64 +194,57 @@ function RegisterMembers() {
                         <label htmlFor="occupation" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Occupation</label>
                         <input 
                             id="occupation"
-                            type="text" 
-                            value={occupation} 
-                            onChange={(e) => setOccupation(e.target.value)} 
+                            type="text"
+                            {...formik.getFieldProps('occupation')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
                         />
+                        {formik.touched.occupation && formik.errors.occupation && <p style={{ color: 'red' }}>{formik.errors.occupation}</p>}
                     </div>
 
                     <div>
                         <label htmlFor="group" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>AG Group</label>
                         <select 
-                            id="group" 
-                            value={group} 
-                            onChange={(e) => setGroup(e.target.value)} 
+                            id="group"
+                            {...formik.getFieldProps('group')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
                         >
-                                <option value="" disabled>Select Group</option>
-                                <option value="1">Transformers</option>
-                                <option value="2">Relentless</option>
-                                <option value="3">Innovators</option>
-                                <option value="4">Pacesetters</option>
-                                <option value="5">Ignition</option>
-                                <option value="6">Gifted</option>
-                                <option value="7">Visionaries</option>
-                                <option value="8">Elevated</option>
+                            <option value="" disabled>Select Group</option>
+                            <option value="1">Transformers</option>
+                            <option value="2">Relentless</option>
+                            <option value="3">Radiant</option>
+                            <option value="4">Rooted</option>
+                            <option value="5">Revolutionaries</option>
                         </select>
+                        {formik.touched.group && formik.errors.group && <p style={{ color: 'red' }}>{formik.errors.group}</p>}
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <input 
-                            id="leader" 
-                            type="checkbox" 
-                            checked={leader} 
-                            onChange={(e) => setLeader(e.target.checked)} 
+                            id="leader"
+                            type="checkbox"
+                            checked={formik.values.leader}
+                            onChange={formik.handleChange}
                             style={{ marginRight: '8px' }}
                         />
-                        <label htmlFor="leader" style={{ color: '#333' }}>Leader</label>
+                        <label htmlFor="leader" style={{ color: '#333' }}>Is Leader?</label>
                     </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    {success && <p style={{ color: 'green' }}>{success}</p>}
-
                     <button 
-                        type="submit" 
-                        disabled={isSubmitting} 
+                        type="submit"
+                        disabled={formik.isSubmitting}
                         style={{
-                            backgroundColor: '#007bff',
-                            color: '#fff',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
                             padding: '12px',
-                            borderRadius: '4px',
                             border: 'none',
+                            borderRadius: '4px',
                             cursor: 'pointer',
-                            marginTop: '16px',
-                            transition: 'background-color 0.3s',
-                            ...(isSubmitting && { backgroundColor: '#007bff80', cursor: 'not-allowed' })
                         }}
                     >
-                        {isSubmitting ? 'Submitting...' : 'Register Member'}
+                        {formik.isSubmitting ? 'Submitting...' : 'Submit'}
                     </button>
+
+                    {formik.errors.server && <p style={{ color: 'red' }}>{formik.errors.server}</p>}
                 </form>
             </div>
         </div>
