@@ -2,44 +2,44 @@ import { useState, useEffect } from 'react';
 
 const styles = {
   container: {
-    marginBottom: '1rem', // mb-4
+    marginBottom: '1rem',
   },
   button: {
-    padding: '0.5rem', // p-2
+    padding: '0.5rem',
     color: 'white',
-    borderRadius: '0.25rem', // rounded
-    marginRight: '0.5rem', // mr-2
+    borderRadius: '0.25rem',
+    marginRight: '0.5rem',
   },
   exportButton: {
-    backgroundColor: '#4299e1', // bg-blue-500
+    backgroundColor: '#4299e1',
   },
   printButton: {
-    backgroundColor: '#48bb78', // bg-green-500
+    backgroundColor: '#48bb78',
   },
   loadingText: {
     ariaLive: 'polite',
   },
   errorText: {
-    color: '#f56565', // text-red-500
+    color: '#f56565',
   },
   table: {
-    width: '100%', // w-full
-    borderCollapse: 'collapse', // Table layout styling
+    width: '100%',
+    borderCollapse: 'collapse',
   },
   th: {
-    padding: '0.5rem 1rem', // px-4 py-2
+    padding: '0.5rem 1rem',
     textAlign: 'left',
-    borderBottom: '2px solid #e2e8f0', // Similar to Tailwind's border styling
+    borderBottom: '2px solid #e2e8f0',
   },
   td: {
-    padding: '0.5rem 1rem', // px-4 py-2
-    borderBottom: '1px solid #e2e8f0', // Similar to Tailwind's border styling
+    padding: '0.5rem 1rem', 
+    borderBottom: '1px solid #e2e8f0', 
   },
   present: {
-    color: '#48bb78', // text-green-500
+    color: '#48bb78',
   },
   absent: {
-    color: '#f56565', // text-red-500
+    color: '#f56565', 
   },
 };
 
@@ -51,16 +51,16 @@ function AttendanceDetails() {
   useEffect(() => {
     const fetchMemberAttendance = async () => {
       try {
-        const response = await fetch('https://vault-ministry-server.onrender.com/attendancedetails');
+        const response = await fetch('/attendancedetails');
         if (!response.ok) {
           throw new Error('Failed to fetch attendance details');
         }
         const data = await response.json();
 
-        // Filter attendance records to only include Sundays
+        
         const sundayAttendance = data.filter(member => {
           const attendanceDate = new Date(member.date);
-          return attendanceDate.getDay() === 0; // 0 is Sunday
+          return attendanceDate.getDay() === 0;
         });
 
         setMembers(sundayAttendance);
@@ -74,7 +74,7 @@ function AttendanceDetails() {
   }, []);
 
   const exportToCSV = () => {
-    // Generate CSV logic
+    
   };
 
   const printReport = () => {

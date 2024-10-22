@@ -5,7 +5,7 @@ function Logout() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('https://vault-ministry-server.onrender.com/logout', {
+            const response = await fetch('/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

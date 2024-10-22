@@ -14,7 +14,7 @@ function Home() {
     useEffect(() => {
         const fetchMembers = async () => {
             try {
-                const response = await fetch("https://vault-ministry-server.onrender.com/homemembers");
+                const response = await fetch("/homemembers");
                 if (!response.ok) {
                     throw new Error('Failed to fetch members');
                 }
@@ -36,7 +36,7 @@ function Home() {
     return (
         <div style={{
             minHeight: '100vh',
-            backgroundImage: 'url("/path-to-your-hero-pattern.jpg")',
+            backgroundImage: 'url(/homebg.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',

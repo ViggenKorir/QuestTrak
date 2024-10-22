@@ -11,7 +11,7 @@ function Footer() {
                 flexDirection: 'column', 
                 alignItems: 'center'
             }}>
-                {/* Footer Text */}
+                
                 <div style={{
                     textAlign: 'center', 
                     marginBottom: '1rem'
@@ -20,7 +20,7 @@ function Footer() {
                     <p style={{ color: '#9CA3AF' }}>Empowering youth for a greater tomorrow.</p>
                 </div>
 
-                {/* Social Media Icons */}
+                
                 <div style={{
                     display: 'flex', 
                     gap: '1.5rem', 

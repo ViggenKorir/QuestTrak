@@ -11,16 +11,15 @@ import {
   Legend,
 } from 'chart.js';
 
-// Register the components
 ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
 const styles = {
   container: {
-    backgroundImage: 'url("/path/to/your/background.jpg")', // Replace with your actual image path
+    backgroundImage: 'url("attendance.jpg")',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     minHeight: '100vh',
-    padding: '3.5rem', // p-14
+    padding: '3.5rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -28,13 +27,13 @@ const styles = {
   },
   header: {
     color: 'white',
-    fontSize: '1.5rem', // text-2xl
+    fontSize: '1.5rem',
     fontWeight: 'bold',
     textAlign: 'center',
   },
   totalMembers: {
     color: 'white',
-    fontSize: '1.25rem', // text-xl
+    fontSize: '1.25rem',
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -43,34 +42,34 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    gap: '1.5rem', // space-y-6
+    gap: '1.5rem',
   },
   pieChart: {
-    width: '24rem', // w-96
-    height: '24rem', // h-96
+    width: '24rem',
+    height: '24rem',
     borderRadius: '0.5rem',
-    background: 'linear-gradient(to right, #00bcd4, #00acc1)', // from-cyan-500
+    background: 'linear-gradient(to right, #00bcd4, #00acc1)',
   },
   lineChart: {
     width: '100%',
-    maxWidth: '40rem', // md:w-2/3
-    height: '16rem', // h-64
+    maxWidth: '40rem',
+    height: '16rem',
     borderRadius: '0.5rem',
-    background: 'linear-gradient(to right, #f9f9f9, #eceff1)', // from-gray-50
+    background: 'linear-gradient(to right, #f9f9f9, #eceff1)',
   },
   loadingText: {
     textAlign: 'center',
-    fontSize: '1.125rem', // text-lg
-    color: '#718096', // text-gray-600
+    fontSize: '1.125rem',
+    color: '#718096',
   },
   errorText: {
     textAlign: 'center',
-    fontSize: '1.125rem', // text-lg
-    color: '#f56565', // text-red-600
+    fontSize: '1.125rem',
+    color: '#f56565',
   },
   '@media (min-width: 768px)': {
     chartsContainer: {
-      flexDirection: 'row', // md:flex-row
+      flexDirection: 'row',
     },
   },
 };
@@ -86,7 +85,7 @@ function AttendanceReport() {
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-          const response = await fetch('https://vault-ministry-server.onrender.com/reports');
+          const response = await fetch('/reports');
           if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -145,12 +144,12 @@ function AttendanceReport() {
           </div>
 
           <div style={styles.chartsContainer}>
-            {/* Pie chart */}
+            
             <div style={styles.pieChart}>
               <Pie data={pieData} />
             </div>
 
-            {/* Line chart */}
+            
             <div style={styles.lineChart}>
               <Line data={lineData} />
             </div>
