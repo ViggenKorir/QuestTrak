@@ -44,7 +44,7 @@ function RegisterMembers() {
         };
         console.log(newMember)
         try {
-            const response = await fetch('/adminregistry', {
+            const response = await fetch('https://vault-reg.onrender.com/adminregistry', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

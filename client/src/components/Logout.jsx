@@ -5,7 +5,7 @@ function Logout() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('/logout', {
+            const response = await fetch('https://vault-reg.onrender.com/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

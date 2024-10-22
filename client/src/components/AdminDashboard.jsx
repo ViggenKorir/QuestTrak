@@ -11,7 +11,7 @@ function AdminDashboard() {
   useEffect(() => {
     const displayMembers = async () => {
       try {
-        const response = await fetch("/homemembers");
+        const response = await fetch("https://vault-reg.onrender.com/homemembers");
         if (!response.ok) {
           throw new Error('Failed to fetch members');
         }
@@ -20,7 +20,7 @@ function AdminDashboard() {
         setTotalMembers(data.length);
 
         
-        const displayAttendance = await fetch("/report");
+        const displayAttendance = await fetch("https://vault-reg.onrender.com/report");
         if (!displayAttendance.ok) {
           throw new Error('Cannot get the attendance rate');
         }
