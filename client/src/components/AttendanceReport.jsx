@@ -19,28 +19,53 @@ const styles = {
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     minHeight: '100vh',
-    padding: '3.5rem',
+    padding: '3rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+    color: 'white',
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  },
+  backButton: {
+    position: 'absolute',
+    top: '1rem',
+    left: '1rem',
+    padding: '0.75rem 1.5rem',
+    backgroundColor: '#1e3a8a',  // Professional dark blue
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.375rem',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    fontWeight: '500',
+    transition: 'background-color 0.3s ease',
+  },
+  backButtonHover: {
+    backgroundColor: '#4f46e5',  // Lighter blue on hover
   },
   header: {
-    color: 'white',
-    fontSize: '1.5rem',
+    fontSize: '2rem',
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: '1.5rem',
+    textShadow: '2px 2px 6px rgba(0, 0, 0, 0.6)',
   },
   totalMembers: {
-    color: 'white',
     fontSize: '1.25rem',
     fontWeight: '600',
     textAlign: 'center',
+    marginBottom: '1.5rem',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',  // Adding a transparent background to make text clearer
+    padding: '1rem',
+    borderRadius: '0.5rem',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
   },
   chartsContainer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     gap: '1.5rem',
   },
@@ -48,24 +73,28 @@ const styles = {
     width: '24rem',
     height: '24rem',
     borderRadius: '0.5rem',
-    background: 'linear-gradient(to right, #00bcd4, #00acc1)',
+    background: 'linear-gradient(to right, #00bcd4, #00838f)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
   lineChart: {
     width: '100%',
     maxWidth: '40rem',
     height: '16rem',
     borderRadius: '0.5rem',
-    background: 'linear-gradient(to right, #f9f9f9, #eceff1)',
+    background: 'linear-gradient(to right, #e3f2fd, #90caf9)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
   loadingText: {
     textAlign: 'center',
-    fontSize: '1.125rem',
-    color: '#718096',
+    fontSize: '1.25rem',
+    color: '#ffffff',
+    fontWeight: '500',
   },
   errorText: {
     textAlign: 'center',
-    fontSize: '1.125rem',
-    color: '#f56565',
+    fontSize: '1.25rem',
+    color: '#ff6b6b',
+    fontWeight: '500',
   },
   '@media (min-width: 768px)': {
     chartsContainer: {
@@ -85,22 +114,22 @@ function AttendanceReport() {
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-          const response = await fetch('https://vault-reg.onrender.com/reports');
-          if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          setTotalMembers(data.totalMembers);
-          setAttendancePercentage(data.attendancePercentage);
-          setAbsentMembers(data.absentMembers);
-          setAttendanceTrends(data.attendanceTrends);
+        const response = await fetch('https://vault-reg.onrender.com/reports');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setTotalMembers(data.totalMembers);
+        setAttendancePercentage(data.attendancePercentage);
+        setAbsentMembers(data.absentMembers);
+        setAttendanceTrends(data.attendanceTrends);
       } catch (err) {
-          console.error("Error fetching attendance data:", err.message);
-          setError(err.message);
+        console.error("Error fetching attendance data:", err.message);
+        setError(err.message);
       } finally {
-          setLoading(false);
+        setLoading(false);
       }
-  };
+    };
 
     fetchAttendanceData();
   }, []);
@@ -133,9 +162,15 @@ function AttendanceReport() {
 
   return (
     <div style={styles.container}>
-          <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                Back
-            </button>
+      <button
+        onClick={handleGoBack}
+        style={styles.backButton}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.backButtonHover.backgroundColor}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.backButton.backgroundColor}
+      >
+        Back
+      </button>
+
       {loading ? (
         <p style={styles.loadingText}>Loading...</p>
       ) : error ? (
@@ -151,12 +186,10 @@ function AttendanceReport() {
           </div>
 
           <div style={styles.chartsContainer}>
-            
             <div style={styles.pieChart}>
               <Pie data={pieData} />
             </div>
 
-            
             <div style={styles.lineChart}>
               <Line data={lineData} />
             </div>

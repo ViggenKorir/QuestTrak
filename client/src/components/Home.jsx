@@ -44,21 +44,25 @@ function Home() {
             alignItems: 'center',
             justifyContent: 'center',
             padding: '1.5rem',
+            backdropFilter: 'blur(5px)',
         }}>
             <h1 style={{
                 textAlign: 'center',
-                fontSize: '3rem',
+                fontSize: '3.5rem',
                 fontWeight: '900',
                 color: '#fff',
                 marginBottom: '1rem',
-                textShadow: '0px 2px 4px rgba(0, 0, 0, 0.7)',
+                textShadow: '0px 4px 8px rgba(0, 0, 0, 0.7)',
+                letterSpacing: '0.1rem',
             }}>Vault Ministry</h1>
 
             <h2 style={{
-                fontSize: '2rem',
+                fontSize: '2.25rem',
                 fontWeight: '900',
                 color: '#fff',
                 marginBottom: '2rem',
+                textShadow: '0px 3px 6px rgba(0, 0, 0, 0.7)',
+                letterSpacing: '0.05rem',
             }}>Registered Members</h2>
             
             <button 
@@ -66,15 +70,23 @@ function Home() {
                 style={{
                     backgroundColor: '#f97316',
                     color: '#fff',
-                    padding: '0.75rem 1.5rem',
-                    borderRadius: '0.5rem',
-                    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.2)',
-                    transition: 'transform 0.3s ease',
+                    padding: '0.75rem 2rem',
+                    borderRadius: '0.75rem',
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                     cursor: 'pointer',
                     marginBottom: '1.5rem',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
                 }}
-                onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                onMouseEnter={e => {
+                    e.target.style.transform = 'scale(1.08)';
+                    e.target.style.boxShadow = '0px 6px 15px rgba(0, 0, 0, 0.4)';
+                }}
+                onMouseLeave={e => {
+                    e.target.style.transform = 'scale(1)';
+                    e.target.style.boxShadow = '0px 4px 10px rgba(0, 0, 0, 0.3)';
+                }}
             >
                 Admin Login
             </button>
@@ -87,13 +99,15 @@ function Home() {
                 style={{
                     padding: '0.75rem',
                     border: '2px solid #fff',
-                    borderRadius: '0.5rem',
-                    transition: 'border-color 0.3s ease',
+                    borderRadius: '0.75rem',
+                    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
                     marginBottom: '1.5rem',
                     width: '100%',
                     maxWidth: '50%',
                     backgroundColor: '#fff',
-                    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.2)',
+                    boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.3)',
+                    outline: 'none',
+                    fontSize: '1.125rem',
                 }}
                 onFocus={e => e.target.style.borderColor = '#fb923c'}
                 onBlur={e => e.target.style.borderColor = '#fff'}
@@ -102,22 +116,24 @@ function Home() {
             {loading ? (
                 <p style={{
                     textAlign: 'center',
-                    fontSize: '1.125rem',
+                    fontSize: '1.25rem',
                     fontWeight: '600',
                     color: '#fff',
+                    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
                 }}>Loading...</p>
             ) : error ? (
                 <p style={{
                     color: '#fca5a5',
                     textAlign: 'center',
-                    fontSize: '1.125rem',
+                    fontSize: '1.25rem',
                 }}>{error}</p>
             ) : (
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                    gap: '1rem',
+                    gap: '1.5rem',
                     width: '100%',
+                    maxWidth: '80%',
                 }}>
                     {filteredMembers.map((member) => (
                         <div
@@ -125,8 +141,8 @@ function Home() {
                             style={{
                                 position: 'relative',
                                 padding: '1.5rem',
-                                borderRadius: '0.75rem',
-                                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+                                borderRadius: '1rem',
+                                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
                                 color: '#fff',
                                 backgroundImage: member.group_name === 'Transformers'
                                     ? `url(${transformersBg})` 
@@ -134,18 +150,25 @@ function Home() {
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 minHeight: '200px',
-                                transition: 'transform 0.3s ease',
+                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                                 cursor: 'pointer',
+                                overflow: 'hidden',
                             }}
-                            onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                            onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                            onMouseEnter={e => {
+                                e.target.style.transform = 'scale(1.08)';
+                                e.target.style.boxShadow = '0px 8px 16px rgba(0, 0, 0, 0.4)';
+                            }}
+                            onMouseLeave={e => {
+                                e.target.style.transform = 'scale(1)';
+                                e.target.style.boxShadow = '0px 6px 14px rgba(0, 0, 0, 0.3)';
+                            }}
                         >
                             {/* Overlay */}
                             <div style={{
                                 position: 'absolute',
                                 inset: '0',
                                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                borderRadius: '0.75rem',
+                                borderRadius: '1rem',
                             }}></div>
 
                             {/* Text */}
@@ -154,10 +177,15 @@ function Home() {
                                 zIndex: '10',
                             }}>
                                 <p style={{
-                                    fontWeight: '600',
-                                    fontSize: '1.125rem',
+                                    fontWeight: '700',
+                                    fontSize: '1.25rem',
+                                    marginBottom: '0.5rem',
+                                    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
                                 }}>{`${member.first_name} ${member.last_name}`}</p>
-                                <p>{`AG Group: ${member.group_name}`}</p>
+                                <p style={{
+                                    fontSize: '1rem',
+                                    fontWeight: '500',
+                                }}>{`AG Group: ${member.group_name}`}</p>
                             </div>
                         </div>
                     ))}
@@ -165,7 +193,7 @@ function Home() {
             )}
             
             <Login isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-                <Footer />
+            <Footer />
         </div>
     );
 }

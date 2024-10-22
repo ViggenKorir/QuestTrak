@@ -1,5 +1,4 @@
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
-import Logout from './Logout';
 
 function Footer() {
     return (
@@ -20,7 +19,6 @@ function Footer() {
                     <p style={{ color: '#9CA3AF' }}>Empowering youth for a greater tomorrow.</p>
                 </div>
 
-                
                 <div style={{
                     display: 'flex', 
                     gap: '1.5rem', 
@@ -66,10 +64,6 @@ function Footer() {
                     >
                         <FaInstagram size={24} />
                     </a>
-                </div>
-
-                <div>
-                    <Logout />
                 </div>
             </div>
 

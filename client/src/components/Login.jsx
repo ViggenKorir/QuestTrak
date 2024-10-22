@@ -15,7 +15,7 @@ const Login = ({ isOpen, onClose }) => {
 
         const loginData = {
             username,
-            password
+            password,
         };
 
         try {
@@ -46,28 +46,32 @@ const Login = ({ isOpen, onClose }) => {
             position: 'fixed',
             top: 0,
             left: 0,
-            right: 0,
-            bottom: 0,
+            width: '100vw',
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark overlay for background
+            zIndex: 9999, // Ensure modal is on top
+            transition: 'opacity 0.3s ease-in-out', // Smooth fade effect
+            opacity: isOpen ? 1 : 0,
         }}>
             <div style={{
                 backgroundColor: 'white',
                 borderRadius: '0.5rem',
-                padding: '1.5rem',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                width: '100%',
+                padding: '2rem',
+                boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.2)', // Improved shadow for depth
                 maxWidth: '400px',
+                width: '100%',
+                textAlign: 'center', // Center text
             }}>
                 <h2 style={{
-                    fontSize: '1.25rem',
+                    fontSize: '1.5rem',
                     fontWeight: 'bold',
-                    marginBottom: '1rem',
+                    marginBottom: '1.5rem',
                 }}>Login</h2>
 
-                {error && <p style={{ color: '#f56565', marginBottom: '1rem' }}>{error}</p>}
+                {error && <p style={{ color: '#e53e3e', marginBottom: '1rem' }}>{error}</p>}
 
                 <form onSubmit={handleSubmit}>
                     <input
@@ -76,8 +80,8 @@ const Login = ({ isOpen, onClose }) => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         style={{
-                            border: '1px solid #d1d5db',
-                            padding: '0.5rem',
+                            border: '1px solid #cbd5e0',
+                            padding: '0.75rem',
                             borderRadius: '0.25rem',
                             width: '100%',
                             marginBottom: '1rem',
@@ -90,24 +94,23 @@ const Login = ({ isOpen, onClose }) => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         style={{
-                            border: '1px solid #d1d5db',
-                            padding: '0.5rem',
+                            border: '1px solid #cbd5e0',
+                            padding: '0.75rem',
                             borderRadius: '0.25rem',
                             width: '100%',
                             marginBottom: '1rem',
                         }}
                         required
                     />
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <button
                             type="button"
                             onClick={onClose}
                             style={{
-                                backgroundColor: '#f56565',
+                                backgroundColor: '#e53e3e',
                                 color: 'white',
                                 padding: '0.5rem 1rem',
                                 borderRadius: '0.25rem',
-                                marginRight: '0.5rem',
                                 border: 'none',
                                 cursor: 'pointer',
                             }}
@@ -117,7 +120,7 @@ const Login = ({ isOpen, onClose }) => {
                         <button
                             type="submit"
                             style={{
-                                backgroundColor: '#2563eb',
+                                backgroundColor: '#3182ce',
                                 color: 'white',
                                 padding: '0.5rem 1rem',
                                 borderRadius: '0.25rem',

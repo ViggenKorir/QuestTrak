@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
 function AdminDashboard() {
   const [members, setMembers] = useState([]);
   const [totalMembers, setTotalMembers] = useState(0);
-  const [attendanceRate, setAttendanceRate] = useState(0);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Use useNavigate for redirecting
 
   useEffect(() => {
     const displayMembers = async () => {
@@ -18,20 +18,20 @@ function AdminDashboard() {
         const data = await response.json();
         setMembers(data);
         setTotalMembers(data.length);
-
-        
-        const displayAttendance = await fetch("https://vault-reg.onrender.com/report");
-        if (!displayAttendance.ok) {
-          throw new Error('Cannot get the attendance rate');
-        }
-        const attendanceData = await displayAttendance.json();
-        setAttendanceRate(attendanceData.attendanceRate);
       } catch (error) {
         setError(error);
       }
     };
     displayMembers();
   }, []);
+
+  const handleLogout = () => {
+    // Clear tokens or any user session data
+    localStorage.removeItem('userToken'); // Adjust this based on how you store your user session
+    // Redirect to login page or any other route
+    navigate('/'); // Ensure you have a login route
+    console.log("User logged out"); // Optional logging
+  };
 
   return (
     <div style={{
@@ -40,40 +40,52 @@ function AdminDashboard() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <div>
-        <h1 style={{
-          textAlign: 'center',
-          fontSize: '2.25rem',
-          fontWeight: 'bold',
-          padding: '1rem',
-        }}>Vault Ministry Reg Desk</h1>
-      </div>
-
       <header style={{
         backgroundColor: '#1E3A8A',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         padding: '1.5rem',
         color: 'white',
+        position: 'relative',
       }}>
         <h1 style={{
           fontSize: '1.875rem',
           fontWeight: 'bold',
           letterSpacing: '0.025em',
         }}>Admin Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            backgroundColor: '#FF4757',
+            color: 'white',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            transition: 'background-color 0.3s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FF6B81'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF4757'}
+        >
+          Logout
+        </button>
       </header>
 
       <main style={{ flexGrow: 1, padding: '2.5rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)', // Adjusted to 2 columns
             gap: '2rem',
             marginBottom: '2.5rem',
           }}>
             {[
               { title: 'Total Members', value: totalMembers ? totalMembers : 'Loading...' },
               { title: 'Total Groups', value: '8' },
-              { title: 'Attendance Rate', value: `${attendanceRate}%` },
             ].map((stat, idx) => (
               <div key={idx} style={{
                 backgroundColor: 'white',
@@ -100,7 +112,6 @@ function AdminDashboard() {
             gridTemplateColumns: '1fr',
             gap: '1.5rem',
           }}>
-            
             {[
               { to: '/register-member', label: 'Register New Member', color: '#16A34A' },
               { to: '/view-members', label: 'View All Members', color: '#2563EB' },
