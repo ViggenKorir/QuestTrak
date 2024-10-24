@@ -37,7 +37,6 @@ const Login = ({ isOpen, onClose }) => {
             const data = await response.json();
 
             if (response.ok) {
-                alert('Login successful');
                 onClose();
                 navigate('/admin-dashboard');
             } else {

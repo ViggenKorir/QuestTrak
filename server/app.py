@@ -40,8 +40,6 @@ def before_login():
 
 
 class HomeMembers(Resource):
-    
-    
 
      def get(self):
         # if 'user_id' not in session:
