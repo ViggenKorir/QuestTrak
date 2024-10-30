@@ -17,6 +17,7 @@ function RegisterMembers() {
             occupation: '',
             group: '',
             leader: false,
+            gender: '',  // Added gender field
         },
         validationSchema: Yup.object({
             firstName: Yup.string().required('Required'),
@@ -26,6 +27,7 @@ function RegisterMembers() {
             phone: Yup.string().required('Required'),
             occupation: Yup.string().required('Required'),
             group: Yup.string().required('Required'),
+            gender: Yup.string().required('Required'),  // Validation for gender
         }),
         onSubmit: async (values, { setSubmitting, setSuccess, setError, resetForm }) => {
             try {
@@ -42,6 +44,7 @@ function RegisterMembers() {
                     will_be_coming: values.isVisitor ? values.willBeComing : false,
                     occupation: values.occupation,
                     group: values.group,
+                    gender: values.gender,  // Added gender to newMember
                     group_id: values.group,
                 };
 
@@ -108,6 +111,37 @@ function RegisterMembers() {
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
                         />
                         {formik.touched.lastName && formik.errors.lastName && <p style={{ color: 'red' }}>{formik.errors.lastName}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="gender" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Gender</label>
+                        <div style={{ display: 'flex', gap: '16px' }}>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    id="male" 
+                                    name="gender" 
+                                    value="male" 
+                                    checked={formik.values.gender === 'male'}
+                                    onChange={formik.handleChange}
+                                    style={{ marginRight: '8px' }} 
+                                />
+                                <label htmlFor="male" style={{ color: '#333' }}>Male</label>
+                            </div>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    id="female" 
+                                    name="gender" 
+                                    value="female" 
+                                    checked={formik.values.gender === 'female'}
+                                    onChange={formik.handleChange}
+                                    style={{ marginRight: '8px' }} 
+                                />
+                                <label htmlFor="female" style={{ color: '#333' }}>Female</label>
+                            </div>
+                        </div>
+                        {formik.touched.gender && formik.errors.gender && <p style={{ color: 'red' }}>{formik.errors.gender}</p>}
                     </div>
 
                     <div>
@@ -202,19 +236,13 @@ function RegisterMembers() {
                     </div>
 
                     <div>
-                        <label htmlFor="group" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>AG Group</label>
-                        <select 
+                        <label htmlFor="group" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Group</label>
+                        <input 
                             id="group"
+                            type="text"
                             {...formik.getFieldProps('group')}
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        >
-                            <option value="" disabled>Select Group</option>
-                            <option value="1">Transformers</option>
-                            <option value="2">Relentless</option>
-                            <option value="3">Radiant</option>
-                            <option value="4">Rooted</option>
-                            <option value="5">Revolutionaries</option>
-                        </select>
+                        />
                         {formik.touched.group && formik.errors.group && <p style={{ color: 'red' }}>{formik.errors.group}</p>}
                     </div>
 
@@ -226,25 +254,18 @@ function RegisterMembers() {
                             onChange={formik.handleChange}
                             style={{ marginRight: '8px' }}
                         />
-                        <label htmlFor="leader" style={{ color: '#333' }}>Is Leader?</label>
+                        <label htmlFor="leader" style={{ color: '#333' }}>Is a Leader?</label>
                     </div>
 
                     <button 
                         type="submit"
                         disabled={formik.isSubmitting}
-                        style={{
-                            backgroundColor: '#4CAF50',
-                            color: 'white',
-                            padding: '12px',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                        }}
+                        style={{ padding: '12px', border: 'none', borderRadius: '4px', backgroundColor: '#4CAF50', color: 'white', fontSize: '16px', cursor: 'pointer' }}
                     >
-                        {formik.isSubmitting ? 'Submitting...' : 'Submit'}
+                        Register Member
                     </button>
 
-                    {formik.errors.server && <p style={{ color: 'red' }}>{formik.errors.server}</p>}
+                    {formik.errors.submit && <p style={{ color: 'red' }}>{formik.errors.submit}</p>}
                 </form>
             </div>
         </div>
