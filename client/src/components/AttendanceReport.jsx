@@ -34,7 +34,7 @@ const styles = {
     top: '1rem',
     left: '1rem',
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#1e3a8a', 
+    backgroundColor: '#1e3a8a',
     color: 'white',
     border: 'none',
     borderRadius: '0.375rem',
@@ -44,7 +44,7 @@ const styles = {
     transition: 'background-color 0.3s ease',
   },
   backButtonHover: {
-    backgroundColor: '#4f46e5', 
+    backgroundColor: '#4f46e5',
   },
   header: {
     fontSize: '2rem',
@@ -65,25 +65,30 @@ const styles = {
   },
   chartsContainer: {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column', // Default to column for smaller screens
     gap: '1.5rem',
+    alignItems: 'center',
+  },
+  chartsRow: {
+    display: 'flex',
+    justifyContent: 'space-between', // Space charts evenly
+    gap: '1.5rem',
+    width: '100%', // Ensure it takes full width
+  },
+  chartItem: {
+    borderRadius: '0.5rem',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
   pieChart: {
     width: '24rem',
     height: '24rem',
-    borderRadius: '0.5rem',
+    paddingLeft: '2rem', // Add padding to the left of the pie chart
     background: 'linear-gradient(to right, #00bcd4, #00838f)',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
   lineChart: {
-    width: '100%',
-    maxWidth: '40rem',
-    height: '16rem',
-    borderRadius: '0.5rem',
+    width: '40rem', // Increased width for the line chart
+    height: '24rem', // Increased height for better visibility
     background: 'linear-gradient(to right, #e3f2fd, #90caf9)',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
   loadingText: {
     textAlign: 'center',
@@ -99,7 +104,16 @@ const styles = {
   },
   '@media (min-width: 768px)': {
     chartsContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column', // Column for smaller screens
+    },
+    chartsRow: {
+      flexDirection: 'row', // Row for larger screens
+      justifyContent: 'space-between', // Space them evenly
+      width: '100%',
+    },
+    chartItem: {
+      width: '24rem',
+      height: '24rem',
     },
   },
 };
@@ -186,7 +200,7 @@ function AttendanceReport() {
             <h3>Absent Members: {absentMembers}</h3>
           </div>
 
-          <div style={styles.chartsContainer}>
+          <div style={styles.chartsRow}>
             <div style={styles.pieChart}>
               <Pie data={pieData} />
             </div>

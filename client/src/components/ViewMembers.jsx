@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import viewBg from '../images/viewbg.jpg'
+import viewBg from '../images/viewbg.jpg';
 
 function ViewMembers() {
   const [members, setMembers] = useState([]);
@@ -10,7 +10,7 @@ function ViewMembers() {
   const [today] = useState(new Date());
   const [attendanceMarked, setAttendanceMarked] = useState({});
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -43,10 +43,15 @@ function ViewMembers() {
   }, [today]);
 
   useEffect(() => {
-    const results = members.filter((member) =>
-      member[searchField]?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredMembers(results);
+    if (searchField === "is_student") {
+      const studentMembers = members.filter((member) => member.student);
+      setFilteredMembers(studentMembers);
+    } else {
+      const results = members.filter((member) =>
+        member[searchField]?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredMembers(results);
+    }
   }, [searchTerm, searchField, members]);
 
   const markAttendance = async (memberName) => {
@@ -89,42 +94,39 @@ function ViewMembers() {
   };
 
   const deleteMember = async (memberId) => {
-    console.log(`Attempting to delete member with ID: ${memberId}`);
-
     const confirmDelete = window.confirm("Are you sure you want to delete this member?");
     if (!confirmDelete) return;
 
     try {
-        const response = await fetch(`https://vault-reg.onrender.com/delete/${memberId}`, {
-            method: "DELETE",
-        });
+      const response = await fetch(`https://vault-reg.onrender.com/delete/${memberId}`, {
+        method: "DELETE",
+      });
 
-        if (!response.ok) {
-            throw new Error("Failed to delete member");
-        }
+      if (!response.ok) {
+        throw new Error("Failed to delete member");
+      }
 
-        alert("Member deleted successfully!");
-        setMembers((prevMembers) =>
-            prevMembers.filter((member) => member.id !== memberId)
-        );
-        setFilteredMembers((prevFilteredMembers) =>
-            prevFilteredMembers.filter((member) => member.id !== memberId)
-        );
+      alert("Member deleted successfully!");
+      setMembers((prevMembers) =>
+        prevMembers.filter((member) => member.id !== memberId)
+      );
+      setFilteredMembers((prevFilteredMembers) =>
+        prevFilteredMembers.filter((member) => member.id !== memberId)
+      );
     } catch (error) {
-        setError("Failed to delete member: " + error.message);
+      setError("Failed to delete member: " + error.message);
     }
-};
+  };
 
-    const handleGoBack = () => {
-      window.history.back();
-    };
-
+  const handleGoBack = () => {
+    window.history.back();
+  };
 
   return (
     <div style={{ minHeight: "100vh", padding: "1rem", textAlign: "center", backgroundImage: `url(${viewBg})`, backgroundSize: "cover", backgroundPosition: "center", marginBottom: '1rem', fontFamily: 'Roboto, sans-serif' }}>
-          <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                Back
-            </button>
+      <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+        Back
+      </button>
       <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "#ff7f00", marginBottom: "24px" }}>Members</h1>
 
       <div style={{ marginBottom: "16px" }}>
@@ -149,8 +151,6 @@ function ViewMembers() {
           <option value="school">School</option>
           <option value="location">Location</option>
           <option value="occupation">Occupation</option>
-          <option value="is_student">Student</option>
-          <option value="will_be_coming">Will Be Coming</option>
         </select>
       </div>
 
@@ -177,64 +177,71 @@ function ViewMembers() {
       ) : error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : filteredMembers.length > 0 ? (
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "20px" }}>
-          {filteredMembers.map((member) => {
-            const memberName = `${member.first_name} ${member.last_name}`;
-            return (
-              <div
-                key={member.id}
-                style={{
-                  width: "250px",
-                  margin: "20px",
-                  backgroundColor: "#fff",
-                  border: "1px solid #ddd",
-                  borderRadius: "10px",
-                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>{memberName}</h3>
-                <p>Firstname: {member.first_name}</p>
-                <p>Lastname: {member.last_name}</p>
-                <p>DOB: {member.dob}</p>
-                <p>Student: {member.student}</p>
-                <p>School: {member.school}</p>
-                <p>Location: {member.location}</p>
-                <p>Occupation: {member.occupation}</p>
-                <button
-                  onClick={() => markAttendance(memberName)}
+        <div>
+          {searchField === "is_student" && (
+            <p style={{ color: "white", fontSize: "1.25rem" }}>
+              Total Students: {filteredMembers.length}
+            </p>
+          )}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "20px" }}>
+            {filteredMembers.map((member) => {
+              const memberName = `${member.first_name} ${member.last_name}`;
+              return (
+                <div
+                  key={member.id}
                   style={{
-                    marginTop: "8px",
-                    padding: "10px",
-                    backgroundColor: "#38a169",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    border: "none",
-                    cursor: "pointer",
-                    width: "100%",
+                    width: "250px",
+                    margin: "20px",
+                    backgroundColor: "#fff",
+                    border: "1px solid #ddd",
+                    borderRadius: "10px",
+                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                    textAlign: "center",
+                    padding: "20px",
                   }}
                 >
-                  {attendanceMarked[memberName] ? "Attendance Marked" : "Mark Attendance"}
-                </button>
-                <button
-                  onClick={() => deleteMember(member.id)}
-                  style={{
-                    marginTop: "8px",
-                    padding: "10px",
-                    backgroundColor: "#e53e3e",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    border: "none",
-                    cursor: "pointer",
-                    width: "100%",
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            );
-          })}
+                  <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>{memberName}</h3>
+                  <p>Firstname: <b>{member.first_name}</b></p>
+                  <p>Lastname: <b>{member.last_name}</b></p>
+                  <p>DOB: {member.dob}</p>
+                  {member.student && <p>Student: Yes</p>}
+                  <p>School: {member.school}</p>
+                  <p>Location: {member.location}</p>
+                  <p>Occupation: {member.occupation}</p>
+                  <button
+                    onClick={() => markAttendance(memberName)}
+                    style={{
+                      marginTop: "8px",
+                      padding: "10px",
+                      backgroundColor: "#38a169",
+                      color: "#fff",
+                      borderRadius: "8px",
+                      border: "none",
+                      cursor: "pointer",
+                      width: "100%",
+                    }}
+                  >
+                    {attendanceMarked[memberName] ? "Attendance Marked" : "Mark Attendance"}
+                  </button>
+                  <button
+                    onClick={() => deleteMember(member.id)}
+                    style={{
+                      marginTop: "8px",
+                      padding: "10px",
+                      backgroundColor: "#e53e3e",
+                      color: "#fff",
+                      borderRadius: "8px",
+                      border: "none",
+                      cursor: "pointer",
+                      width: "100%",
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <p>No members found.</p>
