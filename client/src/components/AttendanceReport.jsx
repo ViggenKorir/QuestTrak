@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import reportBg from '../images/reportbg.jpg';
 import { Pie, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -15,7 +16,7 @@ ChartJS.register(ArcElement, LineElement, CategoryScale, LinearScale, PointEleme
 
 const styles = {
   container: {
-    backgroundImage: 'url("attendance.jpg")',
+    backgroundImage: `url(${reportBg})`,
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     minHeight: '100vh',
@@ -26,7 +27,7 @@ const styles = {
     justifyContent: 'center',
     position: 'relative',
     color: 'white',
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    fontFamily: 'Roboto, sans-serif',
   },
   backButton: {
     position: 'absolute',

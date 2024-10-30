@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Login from './Login'; 
 import transformersBg from '../images/transformersag.jpg';
 import vaultBg from '../images/vaultL1.jpg';
+import homeBg from '../images/homebg.jpg'
 import Footer from './Footer';
 
 function Home() {
@@ -36,7 +37,7 @@ function Home() {
     return (
         <div style={{
             minHeight: '100vh',
-            backgroundImage: 'url(/homebg.jpg)',
+            backgroundImage: `url(${homeBg})` ,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
@@ -180,7 +181,7 @@ function Home() {
                                     fontWeight: '700',
                                     fontSize: '1.75rem',
                                     marginBottom: '0.5rem',
-                                    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
+                                    textShadow: '0px 2px 4px rgba(0, 0, 0, 0.8)',
                                 }}>{`${member.first_name} ${member.last_name}`}</p>
                                 <p style={{
                                     fontSize: '1.75rem',

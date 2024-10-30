@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const styles = {
   container: {
     marginBottom: '1rem',
+    fontFamily: 'Roboto, sans-serif'
   },
   button: {
     padding: '0.5rem',
@@ -58,12 +59,9 @@ function AttendanceDetails() {
         const data = await response.json();
 
         
-        const sundayAttendance = data.filter(member => {
-          const attendanceDate = new Date(member.date);
-          return attendanceDate.getDay() === 0;
-        });
+       
 
-        setMembers(sundayAttendance);
+        setMembers(data);
       } catch (err) {
         setError(err.message);
       } finally {

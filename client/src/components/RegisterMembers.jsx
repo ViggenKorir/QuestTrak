@@ -1,6 +1,6 @@
-import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import registerBg from '../images/registerbg.jpg'
 
 function RegisterMembers() {
     const formik = useFormik({
@@ -73,7 +73,7 @@ function RegisterMembers() {
     };
 
     return (
-        <div style={{ backgroundImage: 'url(/images/bg-image.jpg)', backgroundSize: 'cover', minHeight: '100vh', padding: '1rem' }}>
+        <div style={{ backgroundImage: `url(${registerBg})`, backgroundSize: 'cover', minHeight: '100vh', padding: '1rem', fontFamily: 'Roboto, sans-serif'}}>
             <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                 Back
             </button>

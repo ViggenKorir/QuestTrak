@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import viewBg from '../images/viewbg.jpg'
 
 function ViewMembers() {
   const [members, setMembers] = useState([]);
@@ -120,14 +121,14 @@ function ViewMembers() {
 
 
   return (
-    <div style={{ minHeight: "100vh", padding: "20px", textAlign: "center", backgroundImage: "url('/image/viewbg.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+    <div style={{ minHeight: "100vh", padding: "1rem", textAlign: "center", backgroundImage: `url(${viewBg})`, backgroundSize: "cover", backgroundPosition: "center", marginBottom: '1rem', fontFamily: 'Roboto, sans-serif' }}>
           <button onClick={handleGoBack} style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                 Back
             </button>
-      <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#ff7f00", marginBottom: "24px" }}>View Members</h1>
+      <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: "#ff7f00", marginBottom: "24px" }}>Members</h1>
 
       <div style={{ marginBottom: "16px" }}>
-        <label htmlFor="searchField" style={{ marginRight: "8px", fontSize: "1.125rem" }}>Search by:</label>
+        <label htmlFor="searchField" style={{ marginRight: "8px", color: "white", fontSize: "1.125rem" }}>Search by:</label>
         <select
           id="searchField"
           value={searchField}
@@ -140,6 +141,7 @@ function ViewMembers() {
             transition: "border-color 0.3s ease",
           }}
         >
+          <option value="dropdown">Click Here</option>
           <option value="first_name">First Name</option>
           <option value="last_name">Last Name</option>
           <option value="dob">Date of Birth</option>
