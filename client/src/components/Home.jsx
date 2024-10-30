@@ -142,7 +142,7 @@ function Home() {
                                 position: 'relative',
                                 padding: '1.5rem',
                                 borderRadius: '1rem',
-                                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+                                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.9)',
                                 color: '#fff',
                                 backgroundImage: member.group_name === 'Transformers'
                                     ? `url(${transformersBg})` 
@@ -178,12 +178,12 @@ function Home() {
                             }}>
                                 <p style={{
                                     fontWeight: '700',
-                                    fontSize: '1.25rem',
+                                    fontSize: '1.75rem',
                                     marginBottom: '0.5rem',
                                     textShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
                                 }}>{`${member.first_name} ${member.last_name}`}</p>
                                 <p style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.75rem',
                                     fontWeight: '500',
                                 }}>{`AG Group: ${member.group_name}`}</p>
                             </div>
