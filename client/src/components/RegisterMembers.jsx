@@ -114,32 +114,32 @@ function RegisterMembers() {
                     </div>
 
                     <div>
-                        <label htmlFor="gender" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Gender</label>
-                        <div style={{ display: 'flex', gap: '16px' }}>
-                            <div>
-                                <input 
-                                    type="radio" 
-                                    id="male" 
-                                    name="gender" 
-                                    value="male" 
-                                    checked={formik.values.gender === 'male'}
-                                    onChange={formik.handleChange}
-                                    style={{ marginRight: '8px' }} 
-                                />
-                                <label htmlFor="male" style={{ color: '#333' }}>Male</label>
-                            </div>
-                            <div>
-                                <input 
-                                    type="radio" 
-                                    id="female" 
-                                    name="gender" 
-                                    value="female" 
-                                    checked={formik.values.gender === 'female'}
-                                    onChange={formik.handleChange}
-                                    style={{ marginRight: '8px' }} 
-                                />
-                                <label htmlFor="female" style={{ color: '#333' }}>Female</label>
-                            </div>
+                    <label htmlFor="gender" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Gender</label>
+                    <div style={{ display: 'flex', gap: '16px' }}>
+                        <div>
+                            <input 
+                                type="radio" 
+                                id="male" 
+                                name="gender" 
+                                value="Male"
+                                checked={formik.values.gender === 'Male'}
+                                onChange={formik.handleChange}
+                                style={{ marginRight: '8px' }} 
+                            />
+                            <label htmlFor="male" style={{ color: '#333' }}>Male</label>
+                        </div>
+                        <div>
+                            <input 
+                                type="radio" 
+                                id="female" 
+                                name="gender" 
+                                value="Female" 
+                                checked={formik.values.gender === 'Female'}
+                                onChange={formik.handleChange}
+                                style={{ marginRight: '8px' }} 
+                            />
+                            <label htmlFor="female" style={{ color: '#333' }}>Female</label>
+                        </div>
                         </div>
                         {formik.touched.gender && formik.errors.gender && <p style={{ color: 'red' }}>{formik.errors.gender}</p>}
                     </div>

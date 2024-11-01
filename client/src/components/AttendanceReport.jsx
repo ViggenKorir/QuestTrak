@@ -65,15 +65,15 @@ const styles = {
   },
   chartsContainer: {
     display: 'flex',
-    flexDirection: 'column', // Default to column for smaller screens
+    flexDirection: 'column',
     gap: '1.5rem',
     alignItems: 'center',
   },
   chartsRow: {
     display: 'flex',
-    justifyContent: 'space-between', // Space charts evenly
+    justifyContent: 'space-between',
     gap: '1.5rem',
-    width: '100%', // Ensure it takes full width
+    width: '100%',
   },
   chartItem: {
     borderRadius: '0.5rem',
@@ -82,12 +82,12 @@ const styles = {
   pieChart: {
     width: '24rem',
     height: '24rem',
-    paddingLeft: '2rem', // Add padding to the left of the pie chart
+    paddingLeft: '2rem',
     background: 'linear-gradient(to right, #00bcd4, #00838f)',
   },
   lineChart: {
-    width: '40rem', // Increased width for the line chart
-    height: '24rem', // Increased height for better visibility
+    width: '40rem',
+    height: '24rem',
     background: 'linear-gradient(to right, #e3f2fd, #90caf9)',
   },
   loadingText: {
@@ -104,11 +104,11 @@ const styles = {
   },
   '@media (min-width: 768px)': {
     chartsContainer: {
-      flexDirection: 'column', // Column for smaller screens
+      flexDirection: 'column',
     },
     chartsRow: {
-      flexDirection: 'row', // Row for larger screens
-      justifyContent: 'space-between', // Space them evenly
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       width: '100%',
     },
     chartItem: {

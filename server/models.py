@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy import Enum
 
 db=SQLAlchemy()
 
@@ -22,7 +23,7 @@ class Member(db.Model,SerializerMixin):
     id=db.Column(db.Integer,primary_key=True)
     first_name=db.Column(db.String,nullable=False)
     last_name=db.Column(db.String,nullable=False)
-    gender = db.Column(db.String)
+    gender_enum = db.Column(Enum("Male", "Female", name="gender_enum"), nullable=True)
     dob=db.Column(db.String,nullable=False)
     location = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False)
@@ -31,10 +32,10 @@ class Member(db.Model,SerializerMixin):
     is_visitor = db.Column(db.Boolean, default=False)
     school = db.Column(db.String, nullable=True)
     occupation = db.Column(db.String, nullable=False)
-    #adding fk
+    
     group_id=db.Column(db.Integer,db.ForeignKey('groups.id'))
 
-    #many to many
+    
 
     memberevents=db.relationship('MemberEvent',back_populates='member')
     events=association_proxy('memberevents','event')
