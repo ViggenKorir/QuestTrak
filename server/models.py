@@ -24,7 +24,7 @@ class Member(db.Model,SerializerMixin):
     first_name=db.Column(db.String,nullable=False)
     last_name=db.Column(db.String,nullable=False)
     gender_enum = db.Column(Enum("Male", "Female", name="gender_enum"), nullable=True)
-    dob=db.Column(db.String,nullable=False)
+    dob=db.Column(db.Date,nullable=False)
     location = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False)
     is_student = db.Column(db.Boolean, default=False)
@@ -56,7 +56,7 @@ class Attendance(db.Model,SerializerMixin):
     serialize_rules=('-member.attendances',)
 
     id=db.Column(db.Integer,primary_key=True)
-    date=db.Column(db.String,nullable=False)
+    date=db.Column(db.Date,nullable=False)
     status=db.Column(db.String,nullable=False)
 
     member_id=db.Column(db.Integer,db.ForeignKey('members.id'))

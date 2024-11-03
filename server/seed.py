@@ -34,12 +34,18 @@ def clear_database():
         
         db.session.commit()
 
-
         # Resetting sequences for PostgreSQL
-        db.session.execute(text("ALTER SEQUENCE member_id_seq RESTART WITH 1;"))  # Replace 'member' with your actual table name
-        db.session.execute(text("ALTER SEQUENCE attendance_id_seq RESTART WITH 1;"))  # Replace as needed
-        db.session.execute(text("ALTER SEQUENCE event_id_seq RESTART WITH 1;"))  # Replace as needed
-
+        sequences = {
+            'member_id_seq': "ALTER SEQUENCE member_id_seq RESTART WITH 1;",
+            'attendance_id_seq': "ALTER SEQUENCE attendance_id_seq RESTART WITH 1;",
+            'event_id_seq': "ALTER SEQUENCE event_id_seq RESTART WITH 1;"
+        }
+        
+        for seq_name, command in sequences.items():
+            try:
+                db.session.execute(text(command))
+            except Exception as e:
+                print(f"Could not reset {seq_name}: {e}")
         
         db.session.commit()
         print('Database cleared and sequences reset.')
@@ -63,11 +69,13 @@ def seed_members(num_members, groups):
     print("Seeding members...")
     try:
         members = []
+        genders = ['Male', 'Female']  # List of possible genders
         for _ in range(num_members):
             member = Member(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                dob=fake.date_of_birth(minimum_age=10, maximum_age=60),
+                gender_enum=random.choice(genders),  # Assign gender
+                dob=fake.date_of_birth(minimum_age=10, maximum_age=60).isoformat(),  # Use ISO format for date
                 location=fake.city(),
                 phone=fake.phone_number(),
                 is_student=fake.boolean(chance_of_getting_true=50),
@@ -87,6 +95,7 @@ def seed_members(num_members, groups):
         print(f"Error seeding members: {e}")
         db.session.rollback()
         return []
+
 
 
 def seed_attendance(members):
