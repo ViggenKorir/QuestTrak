@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
+import { FaUser, FaUserTie, FaUserFriends, FaUsers, FaClipboardList, FaRegListAlt, FaUserPlus } from 'react-icons/fa';
 
 function AdminDashboard() {
   const [members, setMembers] = useState([]);
   const [totalMembers, setTotalMembers] = useState(0);
+  const [maleCount, setMaleCount] = useState(0);
+  const [femaleCount, setFemaleCount] = useState(0);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Use useNavigate for redirecting
+  const navigate = useNavigate();
 
   useEffect(() => {
     const displayMembers = async () => {
@@ -16,21 +19,35 @@ function AdminDashboard() {
           throw new Error('Failed to fetch members');
         }
         const data = await response.json();
-        setMembers(data);
-        setTotalMembers(data.length);
+        console.log('Fetched Members:', data);
+
+        if (data && data.length > 0) {
+          setMembers(data);
+          setTotalMembers(data.length);
+
+          // Count male and female members
+          const males = data.filter(member => member.gender_enum === 'Male').length;
+          const females = data.filter(member => member.gender_enum === 'Female').length;
+          setMaleCount(males);
+          setFemaleCount(females);
+
+          // Debugging logs
+          console.log('Male Count:', males);
+          console.log('Female Count:', females);
+        } else {
+          setError('No members found.');
+        }
       } catch (error) {
-        setError(error);
+        setError(error.message);
       }
     };
     displayMembers();
   }, []);
 
   const handleLogout = () => {
-    
-    localStorage.removeItem('userToken'); 
-    
-    navigate('/'); 
-    console.log("User logged out"); 
+    localStorage.removeItem('userToken');
+    navigate('/');
+    console.log("User logged out");
   };
 
   return (
@@ -84,25 +101,29 @@ function AdminDashboard() {
             marginBottom: '2.5rem',
           }}>
             {[
-              { title: 'Total Members', value: totalMembers ? totalMembers : 'Loading...' },
-              { title: 'Total Groups', value: '8' },
+              { title: 'Total Members', value: totalMembers > 0 ? totalMembers : 'Loading...', icon: <FaUsers /> },
+              { title: 'Total Groups', value: '8', icon: <FaUserFriends /> },
+              { title: 'Telios', value: maleCount > 0 ? maleCount : 'Loading...', icon: <FaUserTie /> },
+              { title: 'Elysians', value: femaleCount > 0 ? femaleCount : 'Loading...', icon: <FaUser /> },
             ].map((stat, idx) => (
               <div key={idx} style={{
                 backgroundColor: 'white',
                 padding: '1.5rem',
                 boxShadow: '0px 10px 15px rgba(0, 0, 0, 0.1)',
                 borderRadius: '0.5rem',
-                transform: 'scale(1)',
-                transition: 'transform 0.5s',
-                cursor: 'pointer',
-                ':hover': { transform: 'scale(1.05)' }
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
               }}>
-                <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#4B5563' }}>{stat.title}</h2>
-                <p style={{
-                  fontSize: '3rem',
-                  fontWeight: 'bold',
-                  color: '#111827',
-                }}>{stat.value}</p>
+                <div style={{ fontSize: '2.5rem', color: '#4B5563' }}>{stat.icon}</div>
+                <div>
+                  <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#4B5563' }}>{stat.title}</h2>
+                  <p style={{
+                    fontSize: '2.5rem',
+                    fontWeight: 'bold',
+                    color: '#111827',
+                  }}>{stat.value}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -113,10 +134,10 @@ function AdminDashboard() {
             gap: '1.5rem',
           }}>
             {[
-              { to: '/register-member', label: 'Register New Member', color: '#16A34A' },
-              { to: '/view-members', label: 'View All Members', color: '#2563EB' },
-              { to: '/attendance-report', label: 'Attendance Report', color: '#7C3AED' },
-              { to: '/attendance-details', label: 'Attendance Details', color: '#7C3AED' },
+              { to: '/register-member', label: 'Register New Member', color: '#16A34A', icon: <FaUserPlus /> },
+              { to: '/view-members', label: 'View All Members', color: '#2563EB', icon: <FaRegListAlt /> },
+              { to: '/attendance-report', label: 'Attendance Report', color: '#7C3AED', icon: <FaClipboardList /> },
+              { to: '/attendance-details', label: 'Attendance Details', color: '#7C3AED', icon: <FaClipboardList /> },
             ].map((link, idx) => (
               <Link
                 key={idx}
@@ -130,13 +151,15 @@ function AdminDashboard() {
                   fontSize: '1.125rem',
                   fontWeight: '600',
                   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  transition: 'opacity 0.3s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
                   textDecoration: 'none',
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                 onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
               >
-                {link.label}
+                {link.icon} {link.label}
               </Link>
             ))}
           </div>

@@ -21,30 +21,8 @@ const styles = {
     backgroundSize: 'cover',
     minHeight: '100vh',
     padding: '3rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
     color: 'white',
     fontFamily: 'Roboto, sans-serif',
-  },
-  backButton: {
-    position: 'absolute',
-    top: '1rem',
-    left: '1rem',
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#1e3a8a',
-    color: 'white',
-    border: 'none',
-    borderRadius: '0.375rem',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500',
-    transition: 'background-color 0.3s ease',
-  },
-  backButtonHover: {
-    backgroundColor: '#4f46e5',
   },
   header: {
     fontSize: '2rem',
@@ -63,66 +41,73 @@ const styles = {
     borderRadius: '0.5rem',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
   },
-  chartsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem',
-    alignItems: 'center',
-  },
-  chartsRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '1.5rem',
+  cardContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1rem',
+    padding: '2rem 0',
     width: '100%',
   },
-  chartItem: {
+  attendanceCard: {
+    padding: '1rem',
     borderRadius: '0.5rem',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    color: '#ffffff',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    textAlign: 'center',
+    cursor: 'pointer',
   },
-  pieChart: {
+  cardTitle: {
+    fontSize: '1.25rem',
+    fontWeight: 'bold',
+    marginBottom: '0.5rem',
+  },
+  cardDetails: {
+    fontSize: '1rem',
+    lineHeight: '1.5',
+  },
+  chartsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '2rem',
+    padding: '2rem 0',
+  },
+  chartWrapper: {
     width: '24rem',
     height: '24rem',
-    paddingLeft: '2rem',
-    background: 'linear-gradient(to right, #00bcd4, #00838f)',
+    padding: '1rem',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '0.5rem',
   },
-  lineChart: {
-    width: '40rem',
-    height: '24rem',
-    background: 'linear-gradient(to right, #e3f2fd, #90caf9)',
-  },
-  loadingText: {
-    textAlign: 'center',
-    fontSize: '1.25rem',
-    color: '#ffffff',
+  backButton: {
+    marginTop: '1rem',
+    padding: '0.75rem 1.5rem',
+    backgroundColor: '#1e3a8a',
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.375rem',
+    cursor: 'pointer',
+    fontSize: '1rem',
     fontWeight: '500',
-  },
-  errorText: {
-    textAlign: 'center',
-    fontSize: '1.25rem',
-    color: '#ff6b6b',
-    fontWeight: '500',
-  },
-  '@media (min-width: 768px)': {
-    chartsContainer: {
-      flexDirection: 'column',
-    },
-    chartsRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%',
-    },
-    chartItem: {
-      width: '24rem',
-      height: '24rem',
-    },
+    transition: 'background-color 0.3s ease',
   },
 };
+
+function AttendanceCard({ date, percentage, onClick }) {
+  return (
+    <div style={styles.attendanceCard} onClick={() => onClick(date)}>
+      <h3 style={styles.cardTitle}>{date}</h3>
+      <p style={styles.cardDetails}>Attendance: {percentage}%</p>
+    </div>
+  );
+}
 
 function AttendanceReport() {
   const [totalMembers, setTotalMembers] = useState(0);
   const [attendancePercentage, setAttendancePercentage] = useState(0);
   const [absentMembers, setAbsentMembers] = useState(0);
   const [attendanceTrends, setAttendanceTrends] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -149,15 +134,27 @@ function AttendanceReport() {
     fetchAttendanceData();
   }, []);
 
-  const pieData = {
-    labels: ['Present', 'Absent'],
-    datasets: [
-      {
-        data: [attendancePercentage, 100 - attendancePercentage],
-        backgroundColor: ['#4caf50', '#f44336'],
-      },
-    ],
+  const handleCardClick = (date) => {
+    setSelectedDate(date);
   };
+
+  const handleBackToCards = () => {
+    setSelectedDate(null);
+  };
+
+  const selectedData = attendanceTrends.find((trend) => trend.date === selectedDate);
+
+  const pieData = selectedData
+    ? {
+        labels: ['Present', 'Absent'],
+        datasets: [
+          {
+            data: [selectedData.percentage, 100 - selectedData.percentage],
+            backgroundColor: ['#4caf50', '#f44336'],
+          },
+        ],
+      }
+    : null;
 
   const lineData = {
     labels: attendanceTrends.map((item) => item.date),
@@ -171,44 +168,45 @@ function AttendanceReport() {
     ],
   };
 
-  const handleGoBack = () => {
-    window.history.back();
-  };
-
   return (
     <div style={styles.container}>
-      <button
-        onClick={handleGoBack}
-        style={styles.backButton}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.backButtonHover.backgroundColor}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.backButton.backgroundColor}
-      >
-        Back
-      </button>
-
+        <button style={styles.backButton} onClick={handleBackToCards}>
+          Back
+        </button>
       {loading ? (
-        <p style={styles.loadingText}>Loading...</p>
+        <p>Loading...</p>
       ) : error ? (
-        <p style={styles.errorText}>{error}</p>
+        <p>{error}</p>
       ) : (
-        <div style={styles.chartsContainer}>
+        <div>
           <h2 style={styles.header}>Attendance Report</h2>
-
           <div style={styles.totalMembers}>
             <h3>Total Members: {totalMembers}</h3>
-            <h3>Attendance Percentage: {attendancePercentage}%</h3>
-            <h3>Absent Members: {absentMembers}</h3>
           </div>
 
-          <div style={styles.chartsRow}>
-            <div style={styles.pieChart}>
-              <Pie data={pieData} />
+          {selectedDate ? (
+            <>
+              <div style={styles.chartsContainer}>
+                <div style={styles.chartWrapper}>
+                  <Pie data={pieData} />
+                </div>
+                <div style={styles.chartWrapper}>
+                  <Line data={lineData} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={styles.cardContainer}>
+              {attendanceTrends.map((trend, index) => (
+                <AttendanceCard
+                  key={index}
+                  date={trend.date}
+                  percentage={trend.percentage}
+                  onClick={handleCardClick}
+                />
+              ))}
             </div>
-
-            <div style={styles.lineChart}>
-              <Line data={lineData} />
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

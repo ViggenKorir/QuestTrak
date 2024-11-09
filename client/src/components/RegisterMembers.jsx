@@ -1,5 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import registerBg from '../images/registerbg.jpg'
 
 function RegisterMembers() {
@@ -29,7 +31,7 @@ function RegisterMembers() {
             group: Yup.string().required('Required'),
             gender: Yup.string().required('Required'),  // Validation for gender
         }),
-        onSubmit: async (values, { setSubmitting, setSuccess, setError, resetForm }) => {
+        onSubmit: async (values, { setSubmitting, resetForm }) => {
             try {
                 const newMember = {
                     first_name: values.firstName,
@@ -44,11 +46,11 @@ function RegisterMembers() {
                     will_be_coming: values.isVisitor ? values.willBeComing : false,
                     occupation: values.occupation,
                     group: values.group,
-                    gender: values.gender,  // Added gender to newMember
+                    gender: values.gender,
                     group_id: values.group,
                 };
 
-                const response = await fetch('https://vault-reg.onrender.com/adminregistry', {
+                const response = await fetch('http://127.0.0.1:5555/adminregistry', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -57,14 +59,14 @@ function RegisterMembers() {
                 });
 
                 if (response.ok) {
-                    setSuccess('Member registered successfully!');
+                    toast.success('Member registered successfully!');
                     resetForm();
                 } else {
-                    setError('Failed to register member. Please try again.');
+                    toast.error('Failed to register member. Please try again.');
                 }
             } catch (err) {
                 console.error(err);
-                setError('An error occurred. Please try again later.');
+                toast.error('An error occurred. Please try again later.');
             } finally {
                 setSubmitting(false);
             }
@@ -234,15 +236,23 @@ function RegisterMembers() {
                         />
                         {formik.touched.occupation && formik.errors.occupation && <p style={{ color: 'red' }}>{formik.errors.occupation}</p>}
                     </div>
-
                     <div>
-                        <label htmlFor="group" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>Group</label>
-                        <input 
-                            id="group"
-                            type="text"
-                            {...formik.getFieldProps('group')}
+                        <label htmlFor="group" style={{ display: 'block', marginBottom: '8px', color: '#333' }}>AG Group</label>
+                        <select 
+                            id="group" 
+                            {...formik.getFieldProps('group')} 
                             style={{ width: '100%', padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }}
-                        />
+                        >
+                            <option value="" disabled>Select Group</option>
+                            <option value="1">Transformers</option>
+                            <option value="2">Relentless</option>
+                            <option value="3">Innovators</option>
+                            <option value="4">Pacesetters</option>
+                            <option value="5">Ignition</option>
+                            <option value="6">Gifted</option>
+                            <option value="7">Visionaries</option>
+                            <option value="8">Elevated</option>
+                        </select>
                         {formik.touched.group && formik.errors.group && <p style={{ color: 'red' }}>{formik.errors.group}</p>}
                     </div>
 

@@ -56,15 +56,6 @@ function Home() {
                 textShadow: '0px 4px 8px rgba(0, 0, 0, 0.7)',
                 letterSpacing: '0.1rem',
             }}>Vault Ministry</h1>
-
-            <h2 style={{
-                fontSize: '2.25rem',
-                fontWeight: '900',
-                color: '#fff',
-                marginBottom: '2rem',
-                textShadow: '0px 3px 6px rgba(0, 0, 0, 0.7)',
-                letterSpacing: '0.05rem',
-            }}>Registered Members</h2>
             
             <button 
                 onClick={() => setIsModalOpen(true)} 
@@ -91,6 +82,15 @@ function Home() {
             >
                 Admin Login
             </button>
+
+            <h2 style={{
+                fontSize: '2.25rem',
+                fontWeight: '900',
+                color: '#fff',
+                marginBottom: '2rem',
+                textShadow: '0px 3px 6px rgba(0, 0, 0, 0.7)',
+                letterSpacing: '0.05rem',
+            }}>Registered Members</h2>
 
             <input
                 type="text"
