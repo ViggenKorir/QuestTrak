@@ -46,7 +46,7 @@ class HomeMembers(Resource):
         #     return {"message":"Please Login in to acess resources"}
         members_dict = []
         for member in Member.query.all():
-            member_info = member.to_dict(only=('first_name', 'last_name','dob','location','phone','is_student','will_be_coming','is_visitor','school','occupation'))
+            member_info = member.to_dict(only=('first_name', 'last_name','gender_enum','dob','location','phone','is_student','will_be_coming','is_visitor','school','occupation'))
             member_info.update({'group_name': member.group.name})
             members_dict.append(member_info)
         return make_response(members_dict, 200)
@@ -192,37 +192,46 @@ class AttendanceDetails(Resource):
 
 class AttendanceReports(Resource):
     def get(self):
+        # Expecting a date to be passed as a query parameter
+        selected_date = request.args.get('date')
+
+        if not selected_date:
+            return make_response(jsonify({'error': 'Date parameter is required'}), 400)
+
         try:
-            total_members = Member.query.count()
+            # Fetch all members
+            total_members = Member.query.all()
+            attendance_data = []
 
-            last_month = datetime.now() - timedelta(days=30)
-            total_attendance = Attendance.query.filter(Attendance.date >= last_month).count()
+            for member in total_members:
+                # Fetch attendance record for the specific date
+                attendance = Attendance.query.filter_by(member_id=member.id, date=selected_date).first()
+                
+                if attendance:
+                    attendance_info = {
+                        'id': member.id,
+                        'first_name': member.first_name,
+                        'last_name': member.last_name,
+                        'date': attendance.date.strftime('%Y-%m-%d'),  # Format the date as needed
+                        'present': attendance.status == 'present'
+                    }
+                else: 
+                    attendance_info = {
+                        'id': member.id,
+                        'first_name': member.first_name,
+                        'last_name': member.last_name,
+                        'date': selected_date,  # Still show the date
+                        'present': False
+                    }
+                
+                attendance_data.append(attendance_info)
 
-            attendance_percentage = (total_attendance / total_members) * 100 if total_members > 0 else 0
-            absent_members = total_members - total_attendance
-
-            attendance_trends = []
-            for i in range(4):
-                sunday = datetime.now() - timedelta(days=datetime.now().weekday() + 1 + i * 7)
-                sunday_attendance = Attendance.query.filter(func.date(Attendance.date) == sunday.date()).count()
-                sunday_percentage = (sunday_attendance / total_members) * 100 if total_members > 0 else 0
-                attendance_trends.append({
-                    'date': sunday.strftime('%Y-%m-%d'),
-                    'percentage': sunday_percentage
-                })
-
-            report_info = {
-                'totalMembers': total_members,
-                'attendancePercentage': round(attendance_percentage, 2),
-                'absentMembers': absent_members,
-                'attendanceTrends': attendance_trends,
-            }
-
-            return report_info, 200
+            # Return a properly formatted JSON response
+            return jsonify(attendance_data)
 
         except Exception as e:
-            logging.error(f"Error fetching attendance report: {e}")
-            return {'error': str(e)}, 500
+            response = {'error': str(e)}
+            return make_response(jsonify(response), 500)
         
 class Admins(Resource):
 
