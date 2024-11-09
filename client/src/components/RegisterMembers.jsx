@@ -19,7 +19,7 @@ function RegisterMembers() {
             occupation: '',
             group: '',
             leader: false,
-            gender: '',  // Added gender field
+            gender: '',
         },
         validationSchema: Yup.object({
             firstName: Yup.string().required('Required'),
@@ -29,7 +29,7 @@ function RegisterMembers() {
             phone: Yup.string().required('Required'),
             occupation: Yup.string().required('Required'),
             group: Yup.string().required('Required'),
-            gender: Yup.string().required('Required'),  // Validation for gender
+            gender: Yup.string().required('Required'),
         }),
         onSubmit: async (values, { setSubmitting, resetForm }) => {
             try {
@@ -50,7 +50,7 @@ function RegisterMembers() {
                     group_id: values.group,
                 };
 
-                const response = await fetch('http://127.0.0.1:5555/adminregistry', {
+                const response = await fetch('https://vault-reg.onrender.com/adminregistry', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

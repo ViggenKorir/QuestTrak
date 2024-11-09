@@ -38,13 +38,13 @@ const styles = {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     maxWidth: '200px',
     margin: '1rem',
-    flex: '0 1 calc(33.33% - 2rem)', // Adjust width and spacing
+    flex: '0 1 calc(33.33% - 2rem)',
   },
   cardContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around', // Align cards with space around
-    margin: '0 -1rem', // Negative margin to counteract card margin
+    justifyContent: 'space-around',
+    margin: '0 -1rem',
   },
   table: {
     width: '100%',
@@ -149,8 +149,8 @@ function AttendanceSummary() {
         }
         const data = await response.json();
         
-        // Ensure to filter unique Sundays before setting attendanceDays
-        const uniqueDates = Array.from(new Set(data.map(day => day.date))); // Adjust based on actual data format
+        
+        const uniqueDates = Array.from(new Set(data.map(day => day.date)));
         setAttendanceDays(uniqueDates.map(date => ({ date })));
       } catch (err) {
         setError(err.message);
@@ -162,7 +162,6 @@ function AttendanceSummary() {
   }, []);
 
   const handleCardClick = (date) => {
-    // Only allow click if the date is valid and not "N/A"
     const selectedDay = attendanceDays.find(day => day.date === date);
     if (selectedDay && selectedDay.date !== 'N/A') {
       setSelectedDate(date);
@@ -190,7 +189,7 @@ function AttendanceSummary() {
                 <div
                   key={day.date}
                   style={styles.attendanceCard}
-                  onClick={() => handleCardClick(day.date)} // Only allow click on valid dates
+                  onClick={() => handleCardClick(day.date)}
                 >
                   <h3>{day.date}</h3>
                   <p>Click to view details</p>
